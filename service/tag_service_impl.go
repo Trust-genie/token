@@ -2,6 +2,8 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
+	request "github.com/liezner/token/data/requests"
+	"github.com/liezner/token/data/response"
 	"github.com/liezner/token/repository"
 )
 
@@ -27,3 +29,24 @@ func (t *Tagserviceimpl) Create(tags request.Createdatarequest) {
 	t.Tagsrepository.Save(tagModel)
 }
 
+// the delete tagservice
+
+func (t, *Tagserviceimpl)Delete(tagsId int){
+	t.Tagsrepository.Delete(tagsId)
+}
+
+func (t *Tagserviceimpl)Find_all() []response.Tagresponse{
+	var tags []response.Tagresponse
+
+	result := t.Tagsrepository.Find_all()
+
+	for _,value := range result{
+		tag := response.Tagresponse(
+			Uuid: value.id,
+			Name: value.name,
+		)
+		tags = append(tags, tag)
+
+	}
+	return tags
+}
