@@ -42,11 +42,32 @@ func (t *Tagserviceimpl)Find_all() []response.Tagresponse{
 
 	for _,value := range result{
 		tag := response.Tagresponse(
-			Uuid: value.id,
+			Id: value.id,
 			Name: value.name,
 		)
 		tags = append(tags, tag)
 
 	}
 	return tags
+}
+
+// Find by Id implementation
+func (t *Tagserviceimpl)Find(tagId int)response.Tagresponse{
+	tagData, err := t.Tagsrepository.Find(tagId)
+	helper.ErrorPanic(err)
+
+	tagresponse := response.Tagresponse{
+		Id: tagData.ID,
+		Name: tagData.Name
+	}
+	return tagresponse
+}
+
+// the update implementation
+func(t *Tagserviceimpl)Update(tagId	int)response.Tagresponse{
+	tagData, err := t.Tagsrepository.Find(tagId)
+	helper.ErrorPanic(err)
+
+	tagData.Name = tags.Name
+	t.Tagsrepository.Update(tagData)
 }
