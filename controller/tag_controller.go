@@ -31,6 +31,7 @@ func (controller Tagscontroller) Create(ctx gin.Context) {
 		Status: "ok",
 		Data:   nil,
 	}
+	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
 
 }
@@ -55,18 +56,51 @@ func (controller Tagscontroller) Update(ctx gin.Context) {
 		Status: "ok",
 		Data:   nil,
 	}
+	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
 
 }
 
 func (controller Tagscontroller) Find(ctx gin.Context) {
+	tagId := ctx.Param("tagId")
+	id, err := strconv.Atoi(tagId)
+	helper.ErrorPanic(err)
+
+	tagController := controller.tagService.Find(tagId)
+	webResponse := response.Response{
+		Code:   http.StatusOK,
+		Status: "ok",
+		Data:   nil,
+	}
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(http.StatusOK, webResponse)
 
 }
 
 func (controller Tagscontroller) Find_all(ctx gin.Context) {
 
+	tagResponse := controller.tagService.FindAll()
+	webResponse := response.Response{
+		Code:   http.StatusOK,
+		Status: "ok",
+		Data:   nil,
+	}
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(http.StatusOK, webResponse)
 }
 
 func (controller Tagscontroller) Delete(ctx gin.Context) {
+	tagId := ctx.Param("tagId")
+	id, err := strconv.Atoi(tagId)
+	helper.ErrorPanic(err)
 
+	tagController := controller.tagService.Delete(id)
+
+	webResponse := response.Response{
+		Code:   http.StatusOK,
+		Status: "ok",
+		Data:   tagController,
+	}
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(http.StatusOK, webResponse)
 }
