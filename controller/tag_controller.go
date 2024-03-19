@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	request "github.com/liezner/token/data/requests"
 	"github.com/liezner/token/data/response"
+	"github.com/liezner/token/helper"
 	"github.com/liezner/token/service"
 )
 
@@ -33,10 +34,6 @@ func (controller Tagscontroller) Create(ctx gin.Context) {
 	}
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
-
-}
-
-func (controller Tagscontroller) Save(ctx gin.Context) {
 
 }
 
@@ -70,7 +67,7 @@ func (controller Tagscontroller) Find(ctx gin.Context) {
 	webResponse := response.Response{
 		Code:   http.StatusOK,
 		Status: "ok",
-		Data:   nil,
+		Data:   tagController,
 	}
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
@@ -79,7 +76,7 @@ func (controller Tagscontroller) Find(ctx gin.Context) {
 
 func (controller Tagscontroller) Find_all(ctx gin.Context) {
 
-	tagResponse := controller.tagService.FindAll()
+	tagResponse := controller.tagService.Find_all()
 	webResponse := response.Response{
 		Code:   http.StatusOK,
 		Status: "ok",
@@ -94,12 +91,12 @@ func (controller Tagscontroller) Delete(ctx gin.Context) {
 	id, err := strconv.Atoi(tagId)
 	helper.ErrorPanic(err)
 
-	tagController := controller.tagService.Delete(id)
+	controller.tagService.Delete(id)
 
 	webResponse := response.Response{
 		Code:   http.StatusOK,
 		Status: "ok",
-		Data:   tagController,
+		Data:   nil,
 	}
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)

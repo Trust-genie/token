@@ -4,34 +4,33 @@ import (
 	"errors"
 
 	request "github.com/liezner/token/data/requests"
+	"github.com/liezner/token/helper"
 	"github.com/liezner/token/models"
-	"github.com/liezner/token/service"
 	"gorm.io/gorm"
 )
 
 type Tagsrepositoryimpl struct {
-	Db *gorm.DB
+	DB *gorm.DB
 }
 
-func NewTagsRepo(Db *gorm.Db) Tagsrepository {
-	return &Tagsrepositoryimpl{Db: db}
+func NewTagsRepo(Db *gorm.DB) Tagsrepository {
+	return &Tagsrepositoryimpl{DB: Db}
 }
-
 
 // Delete implements Tagsrepository
 func (t *Tagsrepositoryimpl) Delete(tagsId int) {
 	var tags models.Tags
-	result := t.Db.Where("id = ?", tagsId).Delete(&tags)
+	result := t.DB.Where("id = ?", tagsId).Delete(&tags)
 	helper.ErrorPanic(result.Error)
 }
 
 // Implements the findall handler
 func (t *Tagsrepositoryimpl) Find_all() []models.Tags {
-	var tags []models.Tags
-
-	result := t.Db.Find(&tags)
+	var tags models.Tags
+	result := t.DB.Find(&tags)
 	helper.ErrorPanic(result.Error)
 	return tags
+	// this should return a slice not a var
 
 }
 
@@ -39,7 +38,7 @@ func (t *Tagsrepositoryimpl) Find_all() []models.Tags {
 
 func (t *Tagsrepositoryimpl) Find(tagsId int) (tags models.Tags, err error) {
 	// in the tutorial they explictly defined tags again but the compiler says i can discard that
-	result := t.Db.Find(&tags, tagsId)
+	result := t.DB.Find(&tags, tagsId)
 
 	if result != nil {
 		return tags, nil
@@ -50,19 +49,18 @@ func (t *Tagsrepositoryimpl) Find(tagsId int) (tags models.Tags, err error) {
 
 // The save function
 func (t *Tagsrepositoryimpl) Save(tags models.Tags) {
-	var tags models.Tags
 
-	result := t.Db.Create(&tags)
-	helper.ErrorPanic(result)
+	result := t.DB.Create(&tags)
+	helper.ErrorPanic(result.Error)
 }
 
 // the update fuction
 func (t *Tagsrepositoryimpl) Update(tag models.Tags) {
 
 	var updatetag = request.Updatedatarequest{
-		Uuid: tag.Id,
-		Name: tag.Name,
+		Uuid: tag.Salary,
+		Name: tag.Name_first,
 	}
-	result := t.Db.Model(&tag).Updates(updatetag)
+	result := t.DB.Model(&tag).Updates(updatetag)
 	helper.ErrorPanic(result.Error)
 }

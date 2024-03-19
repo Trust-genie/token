@@ -2,8 +2,10 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10/translations/id"
 	request "github.com/liezner/token/data/requests"
 	"github.com/liezner/token/data/response"
+	"github.com/liezner/token/helper"
 	"github.com/liezner/token/repository"
 )
 
@@ -12,6 +14,7 @@ type Tagserviceimpl struct {
 	Validate       *validator.Validate
 }
 
+//Defines and Runs a new Tag service struct
 func NewTagServiceimpl(tagrepo repository.Tagsrepository, validate *validator.Validate) Tagservice {
 	return &Tagserviceimpl{
 		Tagsrepository: tagrepo,
@@ -19,7 +22,6 @@ func NewTagServiceimpl(tagrepo repository.Tagsrepository, validate *validator.Va
 	}
 }
 
-// the tagservice init
 func (t *Tagserviceimpl) Create(tags request.Createdatarequest) {
 	err := t.Validate.Struct(tags)
 	helper.ErrorPanic(err)
@@ -42,7 +44,7 @@ func (t *Tagserviceimpl)Find_all() []response.Tagresponse{
 
 	for _,value := range result{
 		tag := response.Tagresponse(
-			Id: value.id,
+			Uuid: value.id,
 			Name: value.name,
 		)
 		tags = append(tags, tag)
