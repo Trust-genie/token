@@ -48,7 +48,7 @@ func (controller Tagscontroller) Update(ctx gin.Context) {
 	tagId := ctx.Param("tagId")
 	id, err := strconv.Atoi(tagId)
 
-	updatetagreq.Id = id
+	updatetagreq.Uuid = id
 
 	controller.tagService.Update(updatetagreq)
 	webResponse := response.Response{
@@ -66,7 +66,7 @@ func (controller Tagscontroller) Find(ctx gin.Context) {
 	id, err := strconv.Atoi(tagId)
 	helper.ErrorPanic(err)
 
-	tagController := controller.tagService.Find(tagId)
+	tagController := controller.tagService.Find(id)
 	webResponse := response.Response{
 		Code:   http.StatusOK,
 		Status: "ok",
@@ -83,7 +83,7 @@ func (controller Tagscontroller) Find_all(ctx gin.Context) {
 	webResponse := response.Response{
 		Code:   http.StatusOK,
 		Status: "ok",
-		Data:   nil,
+		Data:   tagResponse,
 	}
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(http.StatusOK, webResponse)
