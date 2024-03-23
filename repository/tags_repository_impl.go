@@ -48,6 +48,11 @@ func (t *Tagsrepositoryimpl) Find(tagsId int) (tags models.Tags, err error) {
 }
 
 // The save function
+// This function is implementing the `Save` method for the `Tagsrepositoryimpl` struct. It takes a
+// `models.Tags` object as a parameter, attempts to create a new record in the database using the
+// `Create` method provided by the `gorm.DB` instance stored in the `DB` field of the
+// `Tagsrepositoryimpl` struct, and then checks for any errors that occurred during the operation using
+// the `helper.ErrorPanic` function.
 func (t *Tagsrepositoryimpl) Save(tags models.Tags) {
 
 	result := t.DB.Create(&tags)
